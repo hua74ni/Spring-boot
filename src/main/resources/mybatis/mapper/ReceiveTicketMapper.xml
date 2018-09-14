@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.landicorp.marketing.mapper.ReceiveTicketMapper">
+
+    <resultMap id="receiveTicketMap" type="com.landicorp.marketing.entities.ReceiveTicket">
+        <result column="receive_ticket_id" property="receiveTicketId"></result>
+        <result column="ticket_id" property="ticketId"></result>
+        <result column="ticket_batch" property="ticketBatch"></result>
+        <result column="effective_start_time" property="effectiveStartTime"></result>
+        <result column="effective_end_time" property="effectiveEndTime"></result>
+        <result column="is_force_associator" property="isForceAssociator"></result>
+        <result column="state" property="state"></result>
+        <result column="qr_code" property="qrCode"></result>
+        <result column="create_time" property="createTime"></result>
+        <result column="update_time" property="updateTime"></result>
+    </resultMap>
+
+    <select id="queryReceiveTicketTable" resultMap="receiveTicketMap">
+        select * from t_receive_ticket
+        <where>
+            <if test="receiveTicket.ticketBatch != null and receiveTicket.ticketBatch != ''">ticket_batch = #{receiveTicket.ticketBatch}</if>
+        </where>
+        limit #{offset},#{pageSize}
+    </select>
+
+    <select id="countReceiveTicketTable" parameterType="com.landicorp.marketing.entities.ReceiveTicket" resultType="java.lang.Long">
+        select * from t_receive_ticket
+        <where>
+            <if test="ticketBatch != null and ticketBatch != ''">ticket_batch = #{ticketBatch}</if>
+        </where>
+    </select>
+
+    <insert id="insertReceiveTicket">
+        INSERT INTO t_receive_ticket (
+             ticket_id  ,
+             ticket_batch  ,
+             effective_start_time  ,
+             effective_end_time  ,
+             is_force_associator  ,
+             state  ,
+             qr_code  ,
+             create_time  ,
+             update_time 
+        )
+        VALUES
+            (
+                #{ticketId} ,
+                #{ticketBatch} ,
+                #{effectiveStartTime} ,
+                #{effectiveEndTime} ,
+                #{isForceAssociator} ,
+                #{state} ,
+                #{qrCode} ,
+                #{createTime} ,
+                #{updateTime}
+            );
+    </insert>
+
+    <delete id="delReceiveTicket">
+        delete from t_receive_ticket where receive_ticket_id = #{receiveTicketId}
+    </delete>
+
+    <update id="updateReceiveTicket">
+        UPDATE t_receive_ticket
+        SET
+           <if test="ticketId != null and ticketId != ''">ticket_id = #{ticketId},</if>
+           <if test="ticketBatch != null and ticketBatch != ''">ticket_batch = #{ticketBatch},</if>
+           <if test="effectiveStartTime != null and effectiveStartTime != ''">effective_start_time = #{effectiveStartTime},</if>
+           <if test="effectiveEndTime != null and effectiveEndTime != ''">effective_end_time = #{effectiveEndTime},</if>
+           <if test="isForceAssociator != null and isForceAssociator != ''">is_force_associator = #{isForceAssociator},</if>
+           <if test="state != null and state != ''">state = #{state},</if>
+           <if test="qrCode != null and qrCode != ''">qr_code = #{qrCode},</if>
+           <if test="createTime != null and createTime != ''">create_time = #{createTime},</if>
+           <if test="updateTime != null and updateTime != ''">update_time = #{updateTime}</if>
+        WHERE
+              receive_ticket_id   = #{receiveTicketId};
+    </update>
+
+</mapper>

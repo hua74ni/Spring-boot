@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.landicorp.marketing.mapper.WelfareMapper">
+
+    <resultMap id="welfareMap" type="com.landicorp.marketing.entities.Welfare">
+        <result column="welfare_id" property="welfareId"></result>
+        <result column="act_title" property="actTitle"></result>
+        <result column="act_slogan" property="actSlogan"></result>
+        <result column="welfare_amount" property="welfareAmount"></result>
+        <result column="welfare_price" property="welfarePrice"></result>
+        <result column="start_date" property="startDate"></result>
+        <result column="end_date" property="endDate"></result>
+        <result column="start_time" property="startTime"></result>
+        <result column="end_time" property="endTime"></result>
+        <result column="state" property="state"></result>
+        <result column="everybody_max_act_nbr" property="everybodyMaxActNbr"></result>
+        <result column="everybody_daily_max_act_nbr" property="everybodyDailyMaxActNbr"></result>
+        <result column="everybody_daily_winning_nbr" property="everybodyDailyWinningNbr"></result>
+        <result column="is_force_associator" property="isForceAssociator"></result>
+        <result column="act_rule_descr" property="actRuleDescr"></result>
+        <result column="purchased_gift_amount" property="purchasedGiftAmount"></result>
+        <result column="winner_winning_nbr" property="winnerWinningNbr"></result>
+        <result column="loser_winning_nbr" property="loserWinningNbr"></result>
+        <result column="share_msg_title" property="shareMsgTitle"></result>
+        <result column="share_msg_picture" property="shareMsgPicture"></result>
+        <result column="share_msg_summary" property="shareMsgSummary"></result>
+        <result column="create_time" property="createTime"></result>
+        <result column="update_time" property="updateTime"></result>
+    </resultMap>
+
+    <select id="queryWelfareTable" resultMap="welfareMap">
+        select * from t_welfare
+        <where>
+            <if test="welfare.actTitle != null and welfare.actTitle != ''">and act_title like concat(concat('%',#{welfare.actTitle}),'%')</if>
+            <if test="welfare.state != null and welfare.state != ''">and state = #{welfare.state}</if>
+            <if test="welfare.startDate != null and welfare.startDate != ''">and start_date >= #{welfare.startDate}</if>
+            <if test="welfare.endDate != null and welfare.endDate != ''">and end_date <![CDATA[<=]]> #{welfare.endDate}</if>
+        </where>
+    </select>
+
+    <select id="countWelfareTable" parameterType="com.landicorp.marketing.entities.Welfare" resultType="java.lang.Long">
+        select count(*) from t_welfare
+        <where>
+            <if test="actTitle != null and actTitle != ''">and act_title like concat(concat('%',#{actTitle}),'%')</if>
+            <if test="state != null and state != ''">and state = #{state}</if>
+            <if test="startDate != null and startDate != ''">and start_date > #{startDate}</if>
+            <if test="endDate != null and endDate != ''">and end_date > #{endDate}</if>
+        </where>
+    </select>
+
+    <insert id="insertWelfare">
+        INSERT INTO t_welfare(
+             act_title  ,
+             act_slogan  ,
+             welfare_amount  ,
+             welfare_price  ,
+             start_date  ,
+             end_date  ,
+             start_time  ,
+             end_time  ,
+             state  ,
+             everybody_max_act_nbr  ,
+             everybody_daily_max_act_nbr  ,
+             everybody_daily_winning_nbr  ,
+             is_force_associator  ,
+             act_rule_descr  ,
+             purchased_gift_amount  ,
+             winner_winning_nbr  ,
+             loser_winning_nbr  ,
+             share_msg_title  ,
+             share_msg_picture  ,
+             share_msg_summary  ,
+             create_time  ,
+             update_time 
+        )
+        VALUES
+            (
+                #{actTitle},
+                #{actSlogan},
+                #{welfareAmount},
+                #{welfarePrice},
+                #{startDate},
+                #{endDate},
+                #{startTime},
+                #{endTime},
+                #{state},
+                #{everybodyMaxActNbr},
+                #{everybodyDailyMaxActNbr},
+                #{everybodyDailyWinningNbr},
+                #{isForceAssociator},
+                #{actRuleDescr},
+                #{purchasedGiftAmount},
+                #{winnerWinningNbr},
+                #{loserWinningNbr},
+                #{shareMsgTitle},
+                #{shareMsgPicture},
+                #{shareMsgSummary},
+                #{createTime},
+                #{updateTime},
+            );
+    </insert>
+
+    <update id="updateWelfare">
+        UPDATE t_welfare
+        SET
+          <if test="actTitle != null and actTitle != ''">act_title = #{actTitle},</if>
+          <if test="actSlogan != null and actSlogan != ''">act_slogan = #{actSlogan},</if>
+          <if test="welfareAmount != null and welfareAmount != ''">welfare_amount = #{welfareAmount},</if>
+          <if test="welfarePrice != null and welfarePrice != ''">welfare_price = #{welfarePrice},</if>
+          <if test="startDate != null and startDate != ''">start_date = #{startDate},</if>
+          <if test="endDate != null and endDate != ''">end_date = #{endDate},</if>
+          <if test="startTime != null and startTime != ''">start_time = #{startTime},</if>
+          <if test="endTime != null and endTime != ''">end_time = #{endTime},</if>
+          <if test="state != null and state != ''">state = #{state},</if>
+          <if test="everybodyMaxActNbr != null and everybodyMaxActNbr != ''">everybody_max_act_nbr = #{everybodyMaxActNbr},</if>
+          <if test="everybodyDailyMaxActNbr != null and everybodyDailyMaxActNbr != ''">everybody_daily_max_act_nbr = #{everybodyDailyMaxActNbr},</if>
+          <if test="everybodyDailyWinningNbr != null and everybodyDailyWinningNbr != ''">everybody_daily_winning_nbr = #{everybodyDailyWinningNbr},</if>
+          <if test="isForceAssociator != null and isForceAssociator != ''">is_force_associator = #{isForceAssociator},</if>
+          <if test="actRuleDescr != null and actRuleDescr != ''">act_rule_descr = #{actRuleDescr},</if>
+          <if test="purchasedGiftAmount != null and purchasedGiftAmount != ''">purchased_gift_amount = #{purchasedGiftAmount},</if>
+          <if test="winnerWinningNbr != null and winnerWinningNbr != ''">winner_winning_nbr = #{winnerWinningNbr},</if>
+          <if test="loserWinningNbr != null and loserWinningNbr != ''">loser_winning_nbr = #{loserWinningNbr},</if>
+          <if test="shareMsgTitle != null and shareMsgTitle != ''">share_msg_title = #{shareMsgTitle},</if>
+          <if test="shareMsgPicture != null and shareMsgPicture != ''">share_msg_picture = #{shareMsgPicture},</if>
+          <if test="shareMsgSummary != null and shareMsgSummary != ''">share_msg_summary = #{shareMsgSummary},</if>
+          <if test="updateTime != null and updateTime != ''">update_time = #{updateTime}</if>
+        WHERE
+            welfare_id = #{welfareId};
+    </update>
+
+    <delete id="delWelfare">
+        delete from t_welfare where welfare_id = #{welfareId}
+    </delete>
+
+
+</mapper>

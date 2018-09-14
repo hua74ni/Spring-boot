@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.landicorp.marketing.mapper.TurntableMapper">
+
+    <resultMap type="com.landicorp.marketing.entities.Turntable" id="turntableMap">
+        <result column="turntable_id" property="turntableId"/>
+        <result column="title" property="title"/>
+        <result column="tags" property="tags"/>
+        <result column="preheating_time" property="preheatingTime"/>
+        <result column="start_date" property="startDate"/>
+        <result column="end_date" property="endDate"/>
+        <result column="start_time" property="startTime"/>
+        <result column="end_time" property="endTime"/>
+        <result column="state" property="state"/>
+        <result column="is_daily_Redraw" property="isDailyRedraw"/>
+        <result column="daily_Redraw_nbr" property="dailyRedrawNbr"/>
+        <result column="everbody_init_nbr" property="everbodyInitNbr"/>
+        <result column="everbody_max_nbr" property="everbodyMaxNbr"/>
+        <result column="everbody_daily_max_nbr" property="everbodyDailyMaxNbr"/>
+        <result column="everbody_max_winning_nbr" property="everbodyMaxWinningNbr"/>
+        <result column="is_force_associator" property="isForceAssociator"/>
+        <result column="act_descr" property="actDescr"/>
+        <result column="preheating_act_background_picture" property="preheatingActBackgroundPicture"/>
+        <result column="preheating_act_descr" property="preheatingActDescr"/>
+        <result column="share_cofig_benefit" property="shareCofigBenefit"/>
+        <result column="share_msg_title" property="shareMsgTitle"/>
+        <result column="share_msg_picture" property="shareMsgPicture"/>
+        <result column="share_msg_summary" property="shareMsgSummary"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <sql id="queryTableWhere">
+        <if test="turntable.title != null and turntable.title != ''">AND title like concat(concat('%',#{turntable.title}),'%')</if>
+        <if test="turntable.state != null and turntable.state != ''">AND state = #{turntable.state}</if>
+        <if test="turntable.startDate != null and turntable.startDate != ''">AND start_date >= #{turntable.startDate}</if>
+        <if test="turntable.endDate != null and turntable.endDate != ''">AND end_date <![CDATA[<=]]> #{turntable.endDate}</if>
+    </sql>
+
+    <sql id="pagination">
+        <if test="offset != null and pageSize!= null">
+            <![CDATA[
+                LIMIT #{offset},#{pageSize}
+            ]]>
+        </if>
+    </sql>
+
+    <select id="queryTurnTableTable" resultMap="turntableMap">
+        select * from t_turntable
+        <where>
+            <include refid="queryTableWhere"></include>
+        </where>
+        <include refid="pagination"></include>
+    </select>
+
+    <select id="countTurnTableTable" parameterType="com.landicorp.marketing.entities.Turntable" resultType="java.lang.Long">
+        select count(*) from t_turntable
+        <where>
+            <if test="title != null and title != ''">AND title like concat(concat('%',#{title}),'%')</if>
+            <if test="state != null and state != ''">AND state = #{state}</if>
+            <if test="startDate != null and startDate != ''">AND start_date >= #{startDate}</if>
+            <if test="endDate != null and endDate != ''">AND end_date <![CDATA[<=]]> #{endDate}</if>
+        </where>
+    </select>
+
+    <delete id="delTurntable" parameterType="java.lang.Integer">
+        DELETE from t_turntable where turntable_id in
+        <foreach item="item" collection="deleteIds" open="(" separator="," close=")" >
+            #{item}
+        </foreach>
+    </delete>
+    
+    <insert id="insertTurntable" parameterType="com.landicorp.marketing.entities.Turntable">
+        INSERT INTO t_turntable(
+             title  ,
+             tags  ,
+             preheating_time  ,
+             start_date  ,
+             end_date  ,
+             start_time  ,
+             end_time  ,
+             state  ,
+             is_daily_Redraw  ,
+             daily_Redraw_nbr  ,
+             everbody_init_nbr  ,
+             everbody_max_nbr  ,
+             everbody_daily_max_nbr  ,
+             everbody_max_winning_nbr  ,
+             is_force_associator  ,
+             act_descr  ,
+             preheating_act_background_picture  ,
+             preheating_act_descr  ,
+             share_cofig_benefit  ,
+             share_msg_title  ,
+             share_msg_picture  ,
+             share_msg_summary  ,
+             create_time  ,
+             update_time 
+        )
+        VALUES
+            (
+                #{title} ,
+                #{tags} ,
+                #{preheatingTime} ,
+                #{startDate} ,
+                #{endDate} ,
+                #{startTime} ,
+                #{endTime} ,
+                #{state} ,
+                #{isDailyRedraw} ,
+                #{dailyRedrawNbr} ,
+                #{everbodyInitNbr} ,
+                #{everbodyMaxNbr} ,
+                #{everbodyDailyMaxNbr} ,
+                #{everbodyMaxWinningNbr} ,
+                #{isForceAssociator} ,
+                #{actDescr} ,
+                #{preheatingActBackgroundPicture} ,
+                #{preheatingActDescr} ,
+                #{shareCofigBenefit},
+                #{shareMsgTitle},
+                #{shareMsgPicture},
+                #{shareMsgSummary},
+                #{createTime},
+                #{updateTime}
+            );
+    </insert>
+
+    <update id="updateTurntable" parameterType="com.landicorp.marketing.entities.Turntable">
+        UPDATE t_turntable
+        SET
+          <if test="title != null and title != ''">title  = #{title} ,</if>
+          <if test="tags != null and tags != ''">tags  = #{tags} ,</if>
+          <if test="preheatingTime != null and preheatingTime != ''">preheating_time  = #{preheatingTime} ,</if>
+          <if test="startDate != null and startDate != ''">start_date  = #{startDate} ,</if>
+          <if test="endDate != null and endDate != ''">end_date  = #{endDate} ,</if>
+          <if test="startTime != null and startTime != ''">start_time  = #{startTime} ,</if>
+          <if test="endTime != null and endTime != ''">end_time  = #{endTime} ,</if>
+          <if test="state != null and state != ''">state  = #{state} ,</if>
+          <if test="isDailyRedraw != null and isDailyRedraw != ''">is_daily_Redraw  = #{isDailyRedraw} ,</if>
+          <if test="dailyRedrawnbr != null and dailyRedrawnbr != ''">daily_Redraw_nbr  = #{dailyRedrawnbr} ,</if>
+          <if test="everbodyInitNbr != null and everbodyInitNbr != ''">everbody_init_nbr  = #{everbodyInitNbr} ,</if>
+          <if test="everbodyMaxNbr != null and everbodyMaxNbr != ''">everbody_max_nbr  = #{everbodyMaxNbr} ,</if>
+          <if test="everbodyDailyMaxNbr != null and everbodyDailyMaxNbr != ''">everbody_daily_max_nbr  = #{everbodyDailyMaxNbr} ,</if>
+          <if test="everbodyMaxWinningNbr != null and everbodyMaxWinningNbr != ''">everbody_max_winning_nbr  = #{everbodyMaxWinningNbr} ,</if>
+          <if test="isForceAssociator != null and isForceAssociator != ''">is_force_associator  = #{isForceAssociator} ,</if>
+          <if test="actDescr != null and actDescr != ''">act_descr  = #{actDescr} ,</if>
+          <if test="preheatingActBackgroundPicture != null and preheatingActBackgroundPicture != ''">preheating_act_background_picture  = #{preheatingActBackgroundPicture} ,</if>
+          <if test="preheatingActDescr != null and preheatingActDescr != ''">preheating_act_descr  = #{preheatingActDescr} ,</if>
+          <if test="shareCofigBenefit != null and shareCofigBenefit != ''">share_cofig_benefit  = #{shareCofigBenefit} ,</if>
+          <if test="shareMsgTitle != null and shareMsgTitle != ''">share_msg_shareMsgTitle  = #{shareMsgTitle} ,</if>
+          <if test="shareMsgPicture != null and shareMsgPicture != ''">share_msg_picture  = #{shareMsgPicture} ,</if>
+          <if test="shareMsgSummary != null and shareMsgSummary != ''">share_msg_summary  = #{shareMsgSummary} ,</if>
+          <if test="updateTime != null and updateTime != ''">update_time  = #{updateTime} ,</if>
+        WHERE
+	      turntable_id  = #{turntableId};
+    </update>
+
+
+</mapper>

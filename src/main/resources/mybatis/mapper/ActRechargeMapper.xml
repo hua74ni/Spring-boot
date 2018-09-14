@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.landicorp.marketing.mapper.ActRechargeMapper">
+
+
+
+    <delete id="delActRecharges" parameterType="java.lang.String">
+        DELETE from t_act_recharge where recharge_id in
+        <foreach item="item" collection="deleteIds" open="(" separator="," close=")" >
+            #{item}
+        </foreach>
+    </delete>
+
+
+
+</mapper>

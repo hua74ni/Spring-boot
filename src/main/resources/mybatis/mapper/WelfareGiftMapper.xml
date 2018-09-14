@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.landicorp.marketing.mapper.WelfareGiftMapper">
+
+    <resultMap id="welfareGiftMap" type="com.landicorp.marketing.entities.WelfareGift">
+        <result column="gift_act_id" property="giftActId"></result>
+        <result column="welfare_id" property="welfareId"></result>
+        <result column="ticket_id" property="ticketId"></result>
+        <result column="prize_amount" property="prizeAmount"></result>
+        <result column="gift_act_type" property="giftActType"></result>
+        <result column="winner_winning_probability" property="winnerWinningProbability"></result>
+        <result column="loser_winning_probability" property="loserWinningProbability"></result>
+        <result column="create_time" property="createTime"></result>
+        <result column="update_time" property="updateTime"></result>
+    </resultMap>
+
+    <select id="getWelfareGiftListByWelfareId" parameterType="java.lang.Integer" resultMap="welfareGiftMap">
+        select * from t_welfare_gift
+        where
+          welfare_id = #{welfareId}
+    </select>
+
+    <insert id="insertWelfareGift" parameterType="com.landicorp.marketing.entities.WelfareGift">
+        INSERT INTO t_welfare_gift (
+             welfare_id  ,
+             ticket_id  ,
+             prize_amount  ,
+             gift_act_type  ,
+             winner_winning_probability  ,
+             loser_winning_probability  ,
+             create_time  ,
+             update_time 
+        )
+        VALUES
+            (
+                #{welfareId} ,
+                #{ticketId} ,
+                #{prizeAmount} ,
+                #{giftActType} ,
+                #{winnerWinningProbability} ,
+                #{loserWinningProbability} ,
+                #{createTime} ,
+                #{updateTime} ,
+            );
+    </insert>
+
+    <update id="updateWelfareGift" parameterType="com.landicorp.marketing.entities.WelfareGift">
+        UPDATE t_welfare_gift
+        SET
+          <if test="giftActId != null and giftActId != ''">welfare_id = #{welfareId},</if>
+          <if test="giftActId != null and giftActId != ''">ticket_id = #{ticketId},</if>
+          <if test="giftActId != null and giftActId != ''">prize_amount = #{prizeAmount},</if>
+          <if test="giftActId != null and giftActId != ''">gift_act_type = #{giftActType},</if>
+          <if test="giftActId != null and giftActId != ''">winner_winning_probability = #{winnerWinningProbability},</if>
+          <if test="giftActId != null and giftActId != ''">loser_winning_probability = #{loserWinningProbability},</if>
+          <if test="giftActId != null and giftActId != ''">create_time = #{createTime},</if>
+          <if test="giftActId != null and giftActId != ''">update_time = #{updateTime}</if>
+        WHERE
+             gift_act_id  = #{giftActId};
+    </update>
+
+    <delete id="delWelfareGift" parameterType="java.lang.Integer">
+        delete from t_welfare_gift where welfare_id = #{welfareId}
+    </delete>
+
+</mapper>

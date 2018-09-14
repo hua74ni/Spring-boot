@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.landicorp.marketing.mapper.ActUserGiftMapper">
+
+
+
+    <select id="getActTotalNum" parameterType="com.landicorp.marketing.entities.ActUserGift"  resultType="java.lang.Integer">
+
+        select count(*) FROM t_act_user_gift
+        where open_id = #{openId} and store_id = #{storeId}
+        and act_id_type = #{actIdType} and act_id = #{actId}
+        and act_program_id = #{actProgramId} and specific_type = #{specificType}
+
+    </select>
+
+
+
+</mapper>

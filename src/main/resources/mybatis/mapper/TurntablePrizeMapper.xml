@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.landicorp.marketing.mapper.TurntablePrizeMapper">
+
+    <resultMap id="turntablePrizeMap" type="com.landicorp.marketing.entities.TurntablePrize">
+        <result column="prize_id" property="prizeId"></result>
+        <result column="turntable_id" property="turntableId"></result>
+        <result column="prize_name" property="prizeName"></result>
+        <result column="prize_grade" property="prizeGrade"></result>
+        <result column="prize_type" property="prizeType"></result>
+        <result column="gift_nbr" property="giftNbr"></result>
+        <result column="prize_picture" property="prizePicture"></result>
+        <result column="actual_send_nbr" property="actualSendNbr"></result>
+        <result column="display_nbr" property="displayNbr"></result>
+        <result column="winning_probability" property="winningProbability"></result>
+        <result column="is_open" property="isOpen"></result>
+        <result column="create_time" property="createTime"></result>
+        <result column="update_time" property="updateTime"></result>
+    </resultMap>
+
+
+    <select id="getTurntablePrizeListByTurntableId" parameterType="java.lang.Integer" resultMap="turntablePrizeMap">
+        select * from t_turntable_prize where turntable_id = #{turntableId}
+    </select>
+
+    <insert id="insertTurntablePrize" parameterType="com.landicorp.marketing.entities.TurntablePrize">
+        INSERT INTO t_turntable_prize  (
+              turntable_id   ,
+              prize_name   ,
+              prize_grade   ,
+              prize_type   ,
+              gift_nbr   ,
+              prize_picture   ,
+              actual_send_nbr   ,
+              display_nbr   ,
+              winning_probability   ,
+              is_open   ,
+              create_time   ,
+              update_time  
+        )
+        VALUES
+            (
+                #{turntableId} ,
+                #{prizeName} ,
+                #{prizeGqrade} ,
+                #{prizeType} ,
+                #{giftNbr} ,
+                #{prizePicture} ,
+                #{actualSendNbr} ,
+                #{displayNbr} ,
+                #{winningProbability} ,
+                #{isOpen} ,
+                #{createTime} ,
+                #{updateTime}
+            );
+    </insert>
+
+    <update id="updateTurntablePrize" parameterType="com.landicorp.marketing.entities.TurntablePrize">
+        UPDATE  t_turntable_prize
+        SET
+          <if test="turntableId != null and turntableId != ''">turntable_id  = #{turntableId} ,</if>
+          <if test="prizeName != null and prizeName != ''">prize_name  = #{prizeName} ,</if>
+          <if test="prizeGrade != null and prizeGrade != ''">prize_grade  = #{prizeGrade} ,</if>
+          <if test="prizeType != null and prizeType != ''">prize_type  = #{prizeType} ,</if>
+          <if test="giftNbr != null and giftNbr != ''">gift_nbr  = #{giftNbr} ,</if>
+          <if test=" prizePicture != null and  prizePicture != ''">prize_picture  = #{prizePicture} ,</if>
+          <if test="actualSendNbr != null and actualSendNbr != ''">actual_send_nbr  = #{actualSendNbr} ,</if>
+          <if test="displayNbr != null and displayNbr != ''">display_nbr  = #{displayNbr} ,</if>
+          <if test="winningProbability != null and winningProbability != ''">winning_probability  = #{winningProbability} ,</if>
+          <if test="isOpen != null and isOpen != ''">is_open  = #{isOpen} ,</if>
+          <if test="createTime != null and createTime != ''">create_time  = #{createTime} ,</if>
+          <if test="updateTime != null and updateTime != ''">update_time  = #{updateTime}</if>
+        WHERE
+             prize_id  = #{prizeId};
+    </update>
+
+    <delete id="delTurntablePrize" parameterType="java.lang.Integer">
+        DELETE t_turntable_prize from t_turntable_id = #{turntableId}
+    </delete>
+
+</mapper>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.landicorp.marketing.mapper.UserMoneyStreamMapper">
+
+
+
+    <select id="getTotalMoney" parameterType="com.landicorp.marketing.entities.UserMoneyStream" resultType="java.lang.Double" >
+        select SUM(money) from t_user_money_stream
+        WHERE open_id = #{openId} and store_id = #{storeId}
+        and operate_type = #{operateType}
+        and create_time > #{createTime}
+        GROUP BY open_id,store_id
+    </select>
+
+
+
+</mapper>
